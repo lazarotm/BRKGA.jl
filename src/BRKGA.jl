@@ -1,5 +1,5 @@
 
-module brkga_module
+module BRKGA
 #Pkg.update()
 
 include("brkga_types.jl")
