@@ -1,5 +1,16 @@
-module BRKGA
 
-# package code goes here
+module brkga_module
+#Pkg.update()
 
-end # module
+include("brkga_types.jl")
+include("brkga_gfunctions.jl")
+include("brkga_functions_samples.jl")
+include("brkga_main.jl")
+include("brkga_parser.jl")
+
+#functions and variables exported
+export main,n, p, pe, pm, rhoe, K, MAXT, generation,
+X_INTVL, X_NUMBER, MAX_GENS, N_Evolutions
+
+end
+
