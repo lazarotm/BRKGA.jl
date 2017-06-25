@@ -1,29 +1,21 @@
 
-function main(;n=2,p=100, pe=0.30, pm=0.20, rhoe=0.70, K=3,X_INTVL=100, X_NUMBER=2, MAX_GENS=1000, N_Evolutions=1, teto=10, chao=-10,fn="booth", efn="")
+function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=2, it=0, N_Evolutions=1, dm=[0,0], dmu=[0,0], dml=[0,0], ifn="booth", efn="",sd=270001,of="output.txt", ep=0)
 
-	if efn != ""
-		func = include(efn)
-		println("\nUtilizando função externa: ")
-	else
-		func = eval(parse(fn))
-		println("\nUtilizando função interna: ")
-	end
-
-	println(typeof(func))
+	time = time_ns()
+	
+	func = parse_function_name( efn, ifn )
+	teto, chao = parse_bounds( dm, dmu, dml, n )
+	it_or_ep = 
 
 	current = Array{Population}(K)
 	previous = Array{Population}(K)
 
 	generation = 0	
 
-	rngSeed = 0	# seed to the random number generator
-	srand(rngSeed) # initialize the random number generator
+	srand(sd) # initialize the random number generator
 
 	pe = pe * p
 	pm = pm * p
-
-	teto = fill(10,n)
-	chao = fill(-10,n)
 
 	for i = 1:K
 		# Allocate Population:
@@ -33,19 +25,29 @@ function main(;n=2,p=100, pe=0.30, pm=0.20, rhoe=0.70, K=3,X_INTVL=100, X_NUMBER
 		initialize_population( current, previous, i, p, n, teto, chao,func)
 	end
 
+	oldFitness = getBestFitness_current( current, K, teto, chao )
+	currentFitness = getBestFitness_current( current, K, teto, chao )
 
-	while generation < MAX_GENS
-		evolve_BRKGA(current, previous, K, pe, pm, n, p, rhoe, N_Evolutions, teto, chao, func)
+	while ( parse_it_or_ep(it, ep, generation, currentFitness) )
+
+		evolve_BRKGA(current, previous, K, pe, pm, n, p, rho, N_Evolutions, teto, chao, func)
 		current,previous = previous,current
+		
+		currentFitness = getBestFitness_current( current, K, teto, chao )
+
+		if oldFitness != currentFitness
+
+			@printf "\n[%d] time: %.5f seconds\n" generation+1 ( ( time_ns() - time ) / 1000000000 )
+			getBestFitness_final(current, K, teto, chao)
+			
+		end
 
 		if generation % X_INTVL == 0
 			exchangeElite_BRKGA( X_NUMBER, K, current, p )
 		end
 
+		oldFitness = currentFitness
 		generation = generation + 1
 	end
-
-	best_fitness = getBestFitness_final(current, K, teto, chao)
-
 
 end

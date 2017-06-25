@@ -53,15 +53,14 @@ function getBestFitness_final( current, K, teto, chao )
 	print("chromosome: ")
 	println(current[aux_best].population[current[aux_best].fitness_second[1],:])
 
-	print("K: ")
-	println(aux_best)
+	#print("K: ")
+	#println(aux_best)
 
 	variables = get_solution(teto,chao,current[aux_best].population[current[aux_best].fitness_second[1],:])
 
 	print("solution: ")
 	println(variables)
 
-	println()
 	println()
 end
 
@@ -191,15 +190,17 @@ function exchangeElite_BRKGA( M, K, current, p )
 	end
 end
 
-function getBestFitness( current, K )
+function getBestFitness_current( current, K, teto, chao )
 
 	best = current[1].fitness_first[1]
+	aux_best = 1
 
 	for i = 1:K
 		if current[i].fitness_first[1] < best
 			best = current[i].fitness_first[1]
+			aux_best = i
 		end
-	end
+	end	
 
 	return best
 end
