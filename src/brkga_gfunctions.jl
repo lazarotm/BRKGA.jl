@@ -62,6 +62,8 @@ function getBestFitness_final( current, K, teto, chao )
 	println(variables)
 
 	println()
+
+	return "best value: $best\nchromosome: $(current[aux_best].population[current[aux_best].fitness_second[1],:])\nsolution: $variables\n"
 end
 
 function get_fitness(x)
@@ -138,13 +140,12 @@ function evolution_BRKGA(curr, next, K, pe, pm, n, p, rhoe, teto, chao, func)
 	#println("cheguei no 5")
 
 	# 5. Time to compute fitness, in parallel:
-	#@acc begin	
+
 	Threads.@threads for i = pe:p
 		i = Int(i)
 		x = get_solution(teto,chao,next[K].population[i,:])
 		setFitness(i, abs(func(x)),K,next) 
 	end
-	#end
 
 	#println("cheguei no 6")
 

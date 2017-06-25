@@ -1,16 +1,18 @@
 
-function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=2, it=0, N_Evolutions=1, dm=[0,0], dmu=[0,0], dml=[0,0], ifn="booth", efn="",sd=270001,of="output.txt", ep=0)
+function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=2, it=0, N_Evolutions=1, dm=[0,0], dmu=[0,0], dml=[0,0], ifn="booth", efn="",sd=270001, of="none", ep=0, generation=0)
 
-	time = time_ns()
+	time = time_ns() #variável para armazenar o tempo de processamento	
+
+	outputFile = [""]
+	if( of != "none")	
+		stream = open(of, "w")
+	end
 	
 	func = parse_function_name( efn, ifn )
 	teto, chao = parse_bounds( dm, dmu, dml, n )
-	it_or_ep = 
-
+	
 	current = Array{Population}(K)
-	previous = Array{Population}(K)
-
-	generation = 0	
+	previous = Array{Population}(K)	
 
 	srand(sd) # initialize the random number generator
 
@@ -38,8 +40,11 @@ function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=
 		if oldFitness != currentFitness
 
 			@printf "\n[%d] time: %.5f seconds\n" generation+1 ( ( time_ns() - time ) / 1000000000 )
-			getBestFitness_final(current, K, teto, chao)
-			
+
+			if( of != "none")
+				push!(outputFile,"\n[$(generation+1)] time: $( ( time_ns() - time ) / 1000000000 ) seconds\n" )
+				push!(outputFile,getBestFitness_final(current, K, teto, chao))
+			end	
 		end
 
 		if generation % X_INTVL == 0
@@ -49,5 +54,8 @@ function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=
 		oldFitness = currentFitness
 		generation = generation + 1
 	end
+
+	write(stream, outputFile)
+	close(stream)
 
 end
