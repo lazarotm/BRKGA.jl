@@ -35,7 +35,7 @@ function get_solution( teto, chao, new )
 
 end 
 
-function getBestFitness_final( current, K, teto, chao )
+function getBestFitness_final( current, K, teto, chao, ter )
 
 	best = current[1].fitness_first[1]
 	aux_best = 1
@@ -47,23 +47,24 @@ function getBestFitness_final( current, K, teto, chao )
 		end
 	end	
 
-	print("best value: ")
-	println(best)
+	if ter == 1
 
-	print("chromosome: ")
-	println(current[aux_best].population[current[aux_best].fitness_second[1],:])
+		print("best value: ")
+		println(best)
 
-	#print("K: ")
-	#println(aux_best)
+		print("chromosome: ")
+		println(current[aux_best].population[current[aux_best].fitness_second[1],:])
+	end
 
 	variables = get_solution(teto,chao,current[aux_best].population[current[aux_best].fitness_second[1],:])
 
-	print("solution: ")
-	println(variables)
+	if ter == 1
+		print("solution: ")
+		println(variables)
+		println()
+	end		
 
-	println()
-
-	return "best value: $best\nchromosome: $(current[aux_best].population[current[aux_best].fitness_second[1],:])\nsolution: $variables\n"
+	return "best value: $best\nchromosome: $(current[aux_best].population[current[aux_best].fitness_second[1],:])\nsolution: $variables\n\n"
 end
 
 function get_fitness(x)

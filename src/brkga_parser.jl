@@ -39,6 +39,18 @@ function parse_function_name( efn, ifn )
 	end
 end
 
-function parse_it_or_ep( it, ep, generation, currentFitness )
-	return ( generation < it && it != 0 ) $ ( it == 0 && currentFitness > ep )
+function parse_it_or_ep( it, ep, cont, currentFitness )
+	
+	back = true
+
+	if cont > it && it != -1
+		back = false
+	end
+
+	if currentFitness <= ep
+		back = false
+	end
+
+	return back
+
 end
