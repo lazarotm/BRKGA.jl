@@ -31,6 +31,7 @@ ter=1
 of="none"
 ifn="booth"
 efn=""
+stop=0;
 
 println(ARGS)
 
@@ -53,8 +54,8 @@ for i = 1:length(ARGS)
 	end	
 end
 
-
-main(n=n,p=p,pe=pe,pm=pm,rho=rho,K=K,X_INTVL=X_INTVL, X_NUMBER=X_NUMBER, it=it, N_Evolutions=N_Evolutions, dm=dm, dmu=dmu, dml=dml, ifn=ifn, efn=efn,sd=sd, of=of, ep=ep, generation=generation, ter=ter)
-
+if(stop==0)
+	main(n=n,p=p,pe=pe,pm=pm,rho=rho,K=K,X_INTVL=X_INTVL, X_NUMBER=X_NUMBER, it=it, N_Evolutions=N_Evolutions, dm=dm, dmu=dmu, dml=dml, ifn=ifn, efn=efn,sd=sd, of=of, ep=ep, generation=generation, ter=ter)
 end
 
+end
