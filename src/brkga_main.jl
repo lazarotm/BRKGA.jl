@@ -42,7 +42,6 @@ function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=
 
 			if ter == 1
 				@printf "generation: %d\ntime: %.5f seconds\n" (generation+1) ( ( time_ns() - time ) / 1000000000 )
-				getBestFitness_final(current, K, teto, chao, ter)
 			end
 
 			if( of != "none")
