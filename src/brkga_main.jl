@@ -66,7 +66,10 @@ function main(;n=2,p=100, pe=0.30, pm=0.20, rho=0.70, K=3,X_INTVL=100, X_NUMBER=
 
 	@printf "\nLast generation: %d\n" (generation-1)
 
-	write(stream, outputFile)
-	close(stream)
 
+	if( of != "none")	
+		write(stream, outputFile)
+		close(stream)
+	end
+	
 end
